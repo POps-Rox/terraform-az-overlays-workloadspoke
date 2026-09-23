@@ -4,7 +4,7 @@
 resource "azurerm_network_security_group" "nsg" {
   for_each = var.spoke_subnets
 
-  name                = var.custom_spoke_network_security_group_name != null ? "${var.custom_spoke_network_security_group_name}_${each.key}" : data.popsrox_resource_name.nsg[each.key].result
+  name                = var.custom_spoke_network_security_group_name == null || var.custom_spoke_network_security_group_name == "" ? data.popsrox_resource_name.nsg[each.key].result : "${var.custom_spoke_network_security_group_name}_${each.key}"
   resource_group_name = local.resource_group_name
   location            = local.location
 

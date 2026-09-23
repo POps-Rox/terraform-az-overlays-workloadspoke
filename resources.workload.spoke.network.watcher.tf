@@ -21,14 +21,14 @@ data "azurerm_network_watcher" "nwatcher" {
 # Network flow logs for subnet and NSG
 #-----------------------------------------
 resource "azurerm_network_watcher_flow_log" "nwflog" {
-  for_each                  = var.spoke_subnets
-  name                      = lower("Network-Watcher-flog-log-${each.value.name}")
-  network_watcher_name      = data.azurerm_network_watcher.nwatcher.name
-  resource_group_name       = "NetworkWatcherRG" # Must provide Netwatcher resource Group
-  network_security_group_id = azurerm_network_security_group.nsg[each.key].id
-  storage_account_id        = module.wl_storage_account_spoke.storage_account_id
-  enabled                   = true
-  version                   = 2
+  for_each             = var.spoke_subnets
+  name                 = lower("Network-Watcher-flog-log-${each.value.name}")
+  network_watcher_name = data.azurerm_network_watcher.nwatcher.name
+  resource_group_name  = "NetworkWatcherRG" # Must provide Netwatcher resource Group
+  target_resource_id   = azurerm_network_security_group.nsg[each.key].id
+  storage_account_id   = module.wl_storage_account_spoke.storage_account_id
+  enabled              = true
+  version              = 2
 
   retention_policy {
     enabled = true
