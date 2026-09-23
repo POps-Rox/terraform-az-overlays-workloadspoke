@@ -14,11 +14,19 @@ AUTHOR/S: jrspinella
 
 resource "azurerm_subnet" "default_snet" {
   for_each             = var.spoke_subnets
-  name                 = var.custom_spoke_subnet_name != null ? "${var.custom_spoke_subnet_name}_${each.key}" : data.popsrox_resource_name.snet[each.key].result
+  name                 = var.custom_spoke_subnet_name == null || var.custom_spoke_subnet_name == "" ? data.popsrox_resource_name.snet[each.key].result : "${var.custom_spoke_subnet_name}_${each.key}"
   resource_group_name  = local.resource_group_name
   virtual_network_name = azurerm_virtual_network.spoke_vnet.name
   address_prefixes     = each.value.address_prefixes
-  service_endpoints    = lookup(each.value, "service_endpoints", [])
+
+  dynamic "service_endpoint" {
+    for_each = each.value.service_endpoints
+
+    content {
+      service = service_endpoint.value
+    }
+  }
+
   # Applicable to the subnets which used for Private link endpoints or services
   # azurerm 4.x replaced `private_endpoint_network_policies_enabled` (bool) with
   # `private_endpoint_network_policies` (string enum: "Enabled" / "Disabled" /
@@ -40,4 +48,3 @@ resource "azurerm_subnet" "default_snet" {
     }
   }
 }
-

@@ -2,7 +2,7 @@
 # Licensed under the MIT License.
 
 module "mod_vnet_spoke" {
-  #source  = "github.com/POps-Rox/terraform-az-overlays-workloadspoke?ref=v2.0.0"
+  # source = "../../.."
   #version = "~> x.x.x"
   source = "../../.."
 

@@ -6,7 +6,7 @@
 #--------------------------------------
 # This module will lookup the Azure Region and return the short name for the region
 module "mod_azregions" {
-  source = "github.com/POps-Rox/terraform-az-overlays-azregionslookup?ref=v2.0.0"
+  source = "github.com/POps-Rox/terraform-az-overlays-azregionslookup?ref=v3.0.0"
 
   azure_region = var.location
 }
@@ -23,7 +23,7 @@ data "azurerm_resource_group" "rgrp" {
 }
 
 module "mod_scaffold_rg" {
-  source = "github.com/POps-Rox/terraform-az-overlays-resourcegroup?ref=v2.0.0"
+  source = "github.com/POps-Rox/terraform-az-overlays-resourcegroup?ref=v3.0.0"
 
   count = var.create_spoke_resource_group ? 1 : 0
 
@@ -32,7 +32,7 @@ module "mod_scaffold_rg" {
   org_name                = var.org_name
   environment             = var.deploy_environment
   workload_name           = var.workload_name
-  custom_rg_name          = var.custom_spoke_resource_group_name != null ? var.custom_spoke_resource_group_name : null
+  custom_rg_name          = var.custom_spoke_resource_group_name == null || var.custom_spoke_resource_group_name == "" ? null : var.custom_spoke_resource_group_name
 
   // Tags
   add_tags = merge(local.default_tags, var.add_tags, )

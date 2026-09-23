@@ -6,7 +6,7 @@
 #----------------------------------------------------------
 module "wl_storage_account_spoke" {
   depends_on                   = [module.mod_scaffold_rg]
-  source                       = "github.com/POps-Rox/terraform-az-overlays-storageaccount?ref=v2.0.0"
+  source                       = "github.com/POps-Rox/terraform-az-overlays-storageaccount?ref=v3.0.0"
   existing_resource_group_name = local.resource_group_name
   storage_account_custom_name  = local.spoke_sa_name
   location                     = local.location
